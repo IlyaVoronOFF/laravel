@@ -1,6 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController as CategoryController;
+use App\Http\Controllers\HomeController as HomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +23,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home/{name}', function (string $name) {
-    return "Hello, {$name}";
+//Admin
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::resource('categories', AdminCategoryController::class);
+    Route::resource('news', AdminNewsController::class);
 });
 
-Route::get('/product/{id}', function (string $id) {
-    return "Карточка товара {$id}";
-});
+//User
+Route::get('/auth', [AuthController::class, 'index'])->name('auth');
+//Route::redirect('/auth', '/home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/category', [CategoryController::class, 'index'])->name('category');
+Route::get('/category/{id}', [CategoryController::class, 'show'])->where('id', '\d+')->name('category.showNews');
+Route::get('/news', [NewsController::class, 'index'])->name('news');
+Route::get('/news/{id}', [NewsController::class, 'show'])->where('id', '\d+')->name('news.show');
