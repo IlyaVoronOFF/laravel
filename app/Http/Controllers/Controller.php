@@ -23,7 +23,7 @@ class Controller extends BaseController
             $j = $i + 1;
             $this->news[] = [
                 'id_category' => $j,
-                'title' => "Новость " . $j,
+                'title' =>  "<b>" . "Новость " . $j . "</b>",
                 'description' => $faker->text(100)
             ];
         }
@@ -44,11 +44,13 @@ class Controller extends BaseController
 
     protected function getCategories()
     {
+        $faker = Factory::create('ru_RU');
 
         for ($i = 0; $i < 5; $i++) {
             $j = $i + 1;
             $this->categories[] = [
                 'title' => "Категория " . $j,
+                'description' => $faker->text(100)
             ];
         }
         return $this->categories;

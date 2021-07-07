@@ -15,8 +15,6 @@ class CategoryController extends Controller
 
     public function show(int $id)
     {
-        return view('news.index', [
-            'newsList' => $this->getNewsCategory($id)
-        ]);
+        return view('news.index');
     }
 }
