@@ -15,6 +15,6 @@ class CategoryController extends Controller
 
     public function show(int $id)
     {
-        return view('news.index');
+        return view('news.show');
     }
 }

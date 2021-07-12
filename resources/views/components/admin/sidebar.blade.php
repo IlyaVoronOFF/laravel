@@ -23,12 +23,14 @@
                      <div class="nav-link-icon"><i class="material-icons">language</i></div>
                      Мой сайт
                   </a>
-                  <a class="nav-link" href="{{route('admin.categories.index')}}">
+                  <a class="nav-link @if(request()->routeIs('admin.categories.*')) active @endif"
+                     href="{{route('admin.categories.index')}}">
                      <div class="nav-link-icon"><i class="material-icons">dashboard</i></div>
                      Категории
                   </a>
                   <!-- Drawer link (Overview)-->
-                  <a class="nav-link" href="{{route('admin.news.index')}}">
+                  <a class="nav-link @if(request()->routeIs('admin.news.*')) active @endif"
+                     href="{{route('admin.news.index')}}">
                      <div class="nav-link-icon"><i class="material-icons">dashboard</i></div>
                      Новости
                   </a>

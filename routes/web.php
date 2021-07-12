@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController as CategoryController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HomeController as HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
@@ -20,7 +21,11 @@ use App\Http\Controllers\NewsController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return response()->json([
+        'title' => 'Example',
+        'status' => false,
+        'description' => 'ExampleDescription',
+    ]);
 });
 
 //Admin
@@ -31,6 +36,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
 //User
 Route::get('/auth', [AuthController::class, 'index'])->name('auth');
+Route::resource('feedback', FeedbackController::class);
 //Route::redirect('/auth', '/home');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/category', [CategoryController::class, 'index'])->name('category');

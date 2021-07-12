@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class FeedbackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +13,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.categories.index', [
-            'categoriesList' => $this->getCategories()
-        ]);
+        //
     }
 
     /**
@@ -26,23 +23,24 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        return view('feedback.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response 
      */
     public function store(Request $request)
     {
         $request->validate([
-            'title' => ['required', 'string'],
+            'first_name' => ['required', 'string'],
+            'email' => ['required', 'string'],
+            'phone' => ['required', 'string'],
             'description' => ['required', 'string']
         ]);
-        $data = $request->only(['title', 'status', 'description']);
-        dd($data);
+        $request->only(['title', 'status', 'description']);
     }
 
     /**

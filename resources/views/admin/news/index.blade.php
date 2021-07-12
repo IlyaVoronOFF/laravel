@@ -18,8 +18,10 @@
                   <h2 class="card-title text-white mb-0">Таблица управления публикациями</h2>
                </div>
                <div class="d-flex gap-2">
-                  <button class="btn btn-lg btn-text-white btn-icon" type="button"><i class="material-icons">download</i></button>
-                  <button class="btn btn-lg btn-text-white btn-icon" type="button"><i class="material-icons">print</i></button>
+                  <button class="btn btn-lg btn-text-white btn-icon" type="button"><i
+                        class="material-icons">download</i></button>
+                  <button class="btn btn-lg btn-text-white btn-icon" type="button"><i
+                        class="material-icons">print</i></button>
                </div>
             </div>
          </div>
@@ -43,7 +45,9 @@
                      <td>{!!$news['title']!!}</td>
                      <td>{{$news['description']}}</td>
                      <td>{{now()->format('d-m-Y H:i')}}</td>
-                     <td><a href=" {{route('admin.news.edit', ['news' => $loop->index])}}" style="text-decoration:none;">🖍</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="" style="text-decoration:none;">❌</a></td>
+                     <td><a href=" {{route('admin.news.edit', ['news' => $loop->index])}}"
+                           style="text-decoration:none;">🖍</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href=""
+                           style="text-decoration:none;">❌</a></td>
                   </tr>
                   @empty
                   <tr>
