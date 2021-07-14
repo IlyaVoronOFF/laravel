@@ -33,6 +33,7 @@
                      <th>ID</th>
                      <th>Заголовок</th>
                      <th>Описание</th>
+                     <th>Автор</th>
                      <th data-type="date" data-format="YYYY/MM/DD">Дата добавления</th>
                      <th>Управление</th>
                   </tr>
@@ -41,17 +42,18 @@
                   @forelse ($newsList as $news)
 
                   <tr>
-                     <td>{{$loop->index}}</td>
-                     <td>{!!$news['title']!!}</td>
-                     <td>{{$news['description']}}</td>
-                     <td>{{now()->format('d-m-Y H:i')}}</td>
-                     <td><a href=" {{route('admin.news.edit', ['news' => $loop->index])}}"
+                     <td>{{$news->id}}</td>
+                     <td>{!!$news->title!!}</td>
+                     <td>{{$news->description}}</td>
+                     <td>{{$news->author}}</td>
+                     <td>{{$news->created_at}}</td>
+                     <td><a href=" {{route('admin.news.edit', ['news' => $news->id])}}"
                            style="text-decoration:none;">🖍</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href=""
                            style="text-decoration:none;">❌</a></td>
                   </tr>
                   @empty
                   <tr>
-                     <td colspan="5">
+                     <td colspan="6">
                         <h2>Записей нет</h2>
                      </td>
                   </tr>

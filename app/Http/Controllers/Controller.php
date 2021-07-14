@@ -11,48 +11,4 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
-    protected array $news;
-    protected array $categories;
-
-    protected function getNews()
-    {
-        $faker = Factory::create('ru_RU');
-
-        for ($i = 0; $i < 5; $i++) {
-            $j = $i + 1;
-            $this->news[] = [
-                'id_category' => $j,
-                'title' =>  "<b>" . "Новость " . $j . "</b>",
-                'description' => $faker->text(100)
-            ];
-        }
-        return $this->news;
-    }
-
-    protected function getNewsCategory(int $id)
-    {
-        $arr = $this->getNews();
-        $categoryNews = [];
-        foreach ($arr as $v) {
-            if ($v['id_category'] == $id) {
-                $categoryNews[] = $v;
-            }
-        }
-        return $categoryNews;
-    }
-
-    protected function getCategories()
-    {
-        $faker = Factory::create('ru_RU');
-
-        for ($i = 0; $i < 5; $i++) {
-            $j = $i + 1;
-            $this->categories[] = [
-                'title' => "Категория " . $j,
-                'description' => $faker->text(100)
-            ];
-        }
-        return $this->categories;
-    }
 }
