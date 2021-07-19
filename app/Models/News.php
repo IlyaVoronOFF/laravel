@@ -3,19 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 
 class News extends Model
 {
    protected $table = 'news';
 
-   public function getNews()
-   {
-      return DB::table($this->table)->select(['id', 'title', 'description', 'author', 'created_at'])->get();
-   }
+   protected $fillable = [
+      'category_id',
+      'title',
+      'image',
+      'description',
+      'author',
+      'status',
+   ];
 
-   public function getNewsById(int $id)
+   public function category(): BelongsTo
    {
-      return DB::table($this->table)->find($id);
+      return $this->belongsTo(Category::class, 'category_id', 'id');
    }
 }

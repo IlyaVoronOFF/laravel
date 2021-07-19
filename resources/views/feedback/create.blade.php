@@ -21,22 +21,26 @@
                @csrf
                <div class="form-group">
                   <label for="first_name">Ваше имя</label>
-                  <input type="text" name="first_name" id="first_name" value="{{old('first_name')}}" placeholder="Имя">
+                  <input type="text" class="form-control" name="first_name" id="first_name"
+                     value="{{old('first_name')}}" placeholder="Имя">
                </div>
                <br>
                <div class="form-group">
                   <label for="email">Ваш E-mail</label>
-                  <input type="email" name="email" id="email" value="{{old('email')}}" placeholder="test@test.ru">
+                  <input type="email" class="form-control" name="email" id="email" value="{{old('email')}}"
+                     placeholder="test@test.ru">
                </div>
                <br>
                <div class="form-group">
                   <label for="phone">Ваш телефон</label>
-                  <input type="phone" name="phone" id="phone" value="{{old('phone')}}" placeholder="7999887766">
+                  <input type="phone" class="form-control" name="phone" id="phone" value="{{old('phone')}}"
+                     placeholder="7999887766">
                </div>
                <br>
                <div class="form-group">
                   <label for="description">Ваше сообщение</label>
-                  <textarea class="form-control" name="description" id="" cols="30" rows="10" placeholder="Введите текст">{{old('description')}}</textarea>
+                  <textarea class="form-control" name="description" id="" cols="30" rows="10"
+                     placeholder="Введите текст">{{old('description')}}</textarea>
                </div>
                <br>
                <button class="btn btn-primary" type="submit">Отправить</button>

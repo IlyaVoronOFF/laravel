@@ -28,6 +28,7 @@
          </div>
          <div class="card-body p-4">
             <!-- Simple DataTables example-->
+            @include('inc.success')
             <table id="datatablesSimple">
                <thead>
                   <tr>
@@ -40,10 +41,9 @@
                </thead>
                <tbody>
                   @forelse ($categoriesList as $category)
-
                   <tr>
                      <td>{{$category->id}}</td>
-                     <td>{!!$category->title!!}</td>
+                     <td>{!!$category->title!!} ({{optional($category->news)->count()}})</td>
                      <td>{{$category->description}}</td>
                      <td>{{$category->created_at}}</td>
                      <td><a href="{{route('admin.categories.edit', ['category' => $category->id])}}"

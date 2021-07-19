@@ -18,20 +18,20 @@
                   <h2 class="card-title text-white mb-0">Таблица управления публикациями</h2>
                </div>
                <div class="d-flex gap-2">
-                  <button class="btn btn-lg btn-text-white btn-icon" type="button"><i
-                        class="material-icons">download</i></button>
-                  <button class="btn btn-lg btn-text-white btn-icon" type="button"><i
-                        class="material-icons">print</i></button>
+                  <button class="btn btn-lg btn-text-white btn-icon" type="button"><i class="material-icons">download</i></button>
+                  <button class="btn btn-lg btn-text-white btn-icon" type="button"><i class="material-icons">print</i></button>
                </div>
             </div>
          </div>
          <div class="card-body p-4">
             <!-- Simple DataTables example-->
+            @include('inc.success')
             <table id="datatablesSimple">
                <thead>
                   <tr>
                      <th>ID</th>
                      <th>Заголовок</th>
+                     <th>Картинка</th>
                      <th>Описание</th>
                      <th>Автор</th>
                      <th data-type="date" data-format="YYYY/MM/DD">Дата добавления</th>
@@ -44,16 +44,15 @@
                   <tr>
                      <td>{{$news->id}}</td>
                      <td>{!!$news->title!!}</td>
+                     <td>{{$news->image}}</td>
                      <td>{{$news->description}}</td>
                      <td>{{$news->author}}</td>
                      <td>{{$news->created_at}}</td>
-                     <td><a href=" {{route('admin.news.edit', ['news' => $news->id])}}"
-                           style="text-decoration:none;">🖍</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href=""
-                           style="text-decoration:none;">❌</a></td>
+                     <td><a href=" {{route('admin.news.edit', ['news' => $news->id])}}" style="text-decoration:none;">🖍</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="" style="text-decoration:none;">❌</a></td>
                   </tr>
                   @empty
                   <tr>
-                     <td colspan="6">
+                     <td colspan="7">
                         <h2>Записей нет</h2>
                      </td>
                   </tr>

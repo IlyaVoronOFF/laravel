@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
 
@@ -15,8 +16,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $newsModel = new News();
-        $news = $newsModel->getNews();
+        $news = News::orderBy('id', 'desc')->get();
 
         return view('admin.news.index', [
             'newsList' => $news
@@ -30,7 +30,8 @@ class NewsController extends Controller
      */
     public function create()
     {
-        return view('admin.news.create');
+        $categories = Category::all();
+        return view('admin.news.create', ['categories' => $categories]);
     }
 
     /**
@@ -43,10 +44,19 @@ class NewsController extends Controller
     {
         $request->validate([
             'title' => ['required', 'string'],
-            'description' => ['required', 'string']
+            'description' => ['required', 'string'],
+            'author' => ['required', 'string']
         ]);
-        $data = $request->only(['title', 'status', 'description']);
-        dd($data);
+
+        $news = News::create(
+            $request->only(['category_id', 'title', 'image', 'description', 'author', 'status'])
+        )->save();
+
+        if ($news) {
+            return redirect()->route('admin.news.index')->with('success', 'Запись успешно создана');
+        }
+
+        return back()->with('error', 'Не удалось создать запись');
     }
 
     /**
@@ -68,7 +78,8 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
-        //
+        $categories = Category::all();
+        return view('admin.news.edit', ['news' => $news, 'categories' => $categories]);
     }
 
     /**
@@ -78,9 +89,17 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, News $news)
     {
-        //
+        $status = $news->fill(
+            $request->only(['category_id', 'title', 'image', 'description', 'author', 'status'])
+        )->save();
+
+        if ($status) {
+            return redirect()->route('admin.news.index')->with('success', 'Запись успешно обновлена');
+        }
+
+        return back()->with('error', 'Не удалось обновить запись');
     }
 
     /**

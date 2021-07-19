@@ -3,19 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 class Category extends Model
 {
    protected $table = 'categories';
 
-   public function getCategories()
-   {
-      return DB::table($this->table)->select(['id', 'title', 'description', 'created_at'])->get();
-   }
+   protected $fillable = [
+      'title',
+      'color',
+      'description',
+   ];
 
-   public function getCategoryById(int $id)
+   public function news(): HasMany
    {
-      return DB::table($this->table)->find($id);
+      return $this->hasMany(News::class, 'category_id', 'id');
    }
 }

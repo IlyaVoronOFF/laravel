@@ -15,8 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categoryModel = new Category();
-        $categories = $categoryModel->getCategories();
+        $categories = Category::with('news')
+            ->select(['id', 'title', 'description', 'created_at'])->orderBy('id', 'desc')->get();
 
         return view('admin.categories.index', [
             'categoriesList' => $categories
@@ -45,8 +45,15 @@ class CategoryController extends Controller
             'title' => ['required', 'string'],
             'description' => ['required', 'string']
         ]);
-        $data = $request->only(['title', 'status', 'description']);
-        dd($data);
+        $category = Category::create(
+            $request->only(['title', 'color', 'description'])
+        )->save();
+
+        if ($category) {
+            return redirect()->route('admin.categories.index')->with('success', 'Запись успешно создана');
+        }
+
+        return back()->with('error', 'Не удалось создать запись');
     }
 
     /**
@@ -68,7 +75,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('admin.categories.edit', ['category' => $category]);
     }
 
     /**
@@ -78,9 +85,17 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $status = $category->fill(
+            $request->only(['title', 'color', 'description'])
+        )->save();
+
+        if ($status) {
+            return redirect()->route('admin.categories.index')->with('success', 'Запись успешно обновлена');
+        }
+
+        return back()->with('error', 'Не удалось обновить запись');
     }
 
     /**

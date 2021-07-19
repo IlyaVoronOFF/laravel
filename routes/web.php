@@ -42,4 +42,4 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/category', [CategoryController::class, 'index'])->name('category');
 Route::get('/category/{id}', [CategoryController::class, 'show'])->where('id', '\d+')->name('category.showNews');
 Route::get('/news', [NewsController::class, 'index'])->name('news');
-Route::get('/news/{id}', [NewsController::class, 'show'])->where('id', '\d+')->name('news.show');
+Route::get('/news/{news}', [NewsController::class, 'show'])->where('news', '\d+')->name('news.show');

@@ -6,11 +6,12 @@
          <!-- Post preview-->
          @forelse ($newsList as $news)
          <div class="post-preview">
-            <a href="{{ route('news.show', ['id' => $news->id]) }}">
+            <a href="{{ route('news.show', ['news' => $news->id]) }}">
                <h2 class="post-title">{!! $news->title !!}</h2>
                <h3 class="post-subtitle">{{ $news->description }}</h3>
             </a>
             <p class="post-meta">
+               <strong>Категория: {{optional($news->category)->title}}</strong>&nbsp;
                Опубликовал
                <a href="#!">{{$news->author}}</a>
                от {{$news->created_at}}
@@ -22,8 +23,7 @@
          <h2>Записей нет</h2>
          @endforelse
          <!-- Pager-->
-         <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts
-               →</a></div>
+         <div class="d-flex justify-content-end mb-4">{{$newsList->links()}}</div>
       </div>
    </div>
 </div>
