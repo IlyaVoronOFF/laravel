@@ -47,8 +47,8 @@
                      <td>{{$category->description}}</td>
                      <td>{{$category->created_at}}</td>
                      <td><a href="{{route('admin.categories.edit', ['category' => $category->id])}}"
-                           style="text-decoration:none;">🖍</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href=""
-                           style="text-decoration:none;">❌</a></td>
+                           style="text-decoration:none;">🖍</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:;"
+                           class="delete" rel="{{ $category->id }}" style="text-decoration:none;">❌</a></td>
                   </tr>
                   @empty
                   <tr>
@@ -64,3 +64,25 @@
    </div>
 </main>
 @endsection
+@push('js')
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script>
+$(function() {
+   $("#datatablesSimple").on('click', 'a.delete', function() {
+      if (confirm("Подтверждаете удаление ?")) {
+         $.ajax({
+            headers: {
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: "DELETE",
+            url: "/admin/categories/" + $(this).attr('rel'),
+            complete: function() {
+               alert("Запись удалена");
+               location.reload();
+            }
+         })
+      }
+   });
+});
+</script>
+@endpush

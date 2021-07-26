@@ -33,11 +33,25 @@
                   <label for="title">Заголовок</label>
                   <input type="text" class="form-control" name="title" id="title" value="{{$news->title}}">
                </div>
+               @if($errors->has('title'))
+               <div class="alert alert-danger">
+                  @foreach($errors->get('title') as $error)
+                  <p style="margin-bottom: 0;">{{ $error }}</p>
+                  @endforeach
+               </div>
+               @endif
                <br>
                <div class="form-group">
                   <label for="image">Картинка</label>
                   <input type="file" class="form-control" name="image" id="image" value="{{$news->image}}">
                </div>
+               @if($errors->has('image'))
+               <div class="alert alert-danger">
+                  @foreach($errors->get('image') as $error)
+                  <p style="margin-bottom: 0;">{{ $error }}</p>
+                  @endforeach
+               </div>
+               @endif
                <br>
                <div class="form-group">
                   <label for="status">Статус</label>

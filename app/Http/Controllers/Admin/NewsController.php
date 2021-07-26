@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewsStore;
+use App\Http\Requests\NewsUpdate;
 use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class NewsController extends Controller
 {
@@ -40,23 +43,22 @@ class NewsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(NewsStore $request)
     {
-        $request->validate([
-            'title' => ['required', 'string'],
-            'description' => ['required', 'string'],
-            'author' => ['required', 'string']
-        ]);
+        try {
 
-        $news = News::create(
-            $request->only(['category_id', 'title', 'image', 'description', 'author', 'status'])
-        )->save();
+            $news = News::create(
+                $request->validated()
+            )->save();
 
-        if ($news) {
-            return redirect()->route('admin.news.index')->with('success', 'Запись успешно создана');
+            if ($news) {
+                return redirect()->route('admin.news.index')->with('success', trans('message.admin.news.created.success'));
+            }
+
+            return back()->with('error', __('message.admin.news.created.error'));
+        } catch (ValidationException $e) {
+            dd($e->validator->getMessageBag()->all());
         }
-
-        return back()->with('error', 'Не удалось создать запись');
     }
 
     /**
@@ -89,17 +91,17 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, News $news)
+    public function update(NewsUpdate $request, News $news)
     {
         $status = $news->fill(
-            $request->only(['category_id', 'title', 'image', 'description', 'author', 'status'])
+            $request->validated()
         )->save();
 
         if ($status) {
-            return redirect()->route('admin.news.index')->with('success', 'Запись успешно обновлена');
+            return redirect()->route('admin.news.index')->with('success', trans('message.admin.news.updated.success'));
         }
 
-        return back()->with('error', 'Не удалось обновить запись');
+        return back()->with('error', __('message.admin.news.updated.error'));
     }
 
     /**
@@ -108,8 +110,14 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, News $news)
     {
-        //
+        if ($request->ajax()) {
+            try {
+                $news->delete();
+            } catch (\Throwable $th) {
+                report($th);
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@
    <meta charset="utf-8" />
    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+   <meta name="csrf-token" content="{{ csrf_token() }}">
    <title>@section('title') GBAdmin @show</title>
    <!-- Load Material Icons from Google Fonts-->
    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet" />
@@ -15,6 +16,7 @@
    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500" rel="stylesheet" />
    <!-- Load main stylesheet-->
    <link href="{{asset('assets/admin/css/styles.css')}}" rel="stylesheet" />
+
 </head>
 
 <body class="nav-fixed bg-light">

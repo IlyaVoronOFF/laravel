@@ -48,7 +48,7 @@
                      <td>{{$news->description}}</td>
                      <td>{{$news->author}}</td>
                      <td>{{$news->created_at}}</td>
-                     <td><a href=" {{route('admin.news.edit', ['news' => $news->id])}}" style="text-decoration:none;">🖍</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="" style="text-decoration:none;">❌</a></td>
+                     <td><a href=" {{route('admin.news.edit', ['news' => $news->id])}}" style="text-decoration:none;">🖍</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:;" class="delete" rel="{{ $news->id }}" style="text-decoration:none;">❌</a></td>
                   </tr>
                   @empty
                   <tr>
@@ -64,3 +64,25 @@
    </div>
 </main>
 @endsection
+@push('js')
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script>
+   $(function() {
+      $("#datatablesSimple").on('click', 'a.delete', function() {
+         if (confirm("Подтверждаете удаление ?")) {
+            $.ajax({
+               headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               },
+               type: "DELETE",
+               url: "/admin/news/" + $(this).attr('rel'),
+               complete: function() {
+                  alert("Запись удалена");
+                  location.reload();
+               }
+            })
+         }
+      });
+   });
+</script>
+@endpush

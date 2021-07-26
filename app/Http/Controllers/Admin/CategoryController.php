@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryStore;
+use App\Http\Requests\CategoryUpdate;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -39,21 +41,18 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryStore $request)
     {
-        $request->validate([
-            'title' => ['required', 'string'],
-            'description' => ['required', 'string']
-        ]);
+
         $category = Category::create(
-            $request->only(['title', 'color', 'description'])
+            $request->validated()
         )->save();
 
         if ($category) {
-            return redirect()->route('admin.categories.index')->with('success', 'Запись успешно создана');
+            return redirect()->route('admin.categories.index')->with('success', trans('message.admin.category.created.success'));
         }
 
-        return back()->with('error', 'Не удалось создать запись');
+        return back()->with('error', trans('message.admin.category.created.error'));
     }
 
     /**
@@ -85,17 +84,17 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryUpdate $request, Category $category)
     {
         $status = $category->fill(
-            $request->only(['title', 'color', 'description'])
+            $request->validated()
         )->save();
 
         if ($status) {
-            return redirect()->route('admin.categories.index')->with('success', 'Запись успешно обновлена');
+            return redirect()->route('admin.categories.index')->with('success', trans('message.admin.category.updated.success'));
         }
 
-        return back()->with('error', 'Не удалось обновить запись');
+        return back()->with('error', trans('message.admin.category.updated.error'));
     }
 
     /**
@@ -104,8 +103,14 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, Category $category)
     {
-        //
+        if ($request->ajax()) {
+            try {
+                $category->delete();
+            } catch (\Throwable $th) {
+                report($th);
+            }
+        }
     }
 }
