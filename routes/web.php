@@ -3,12 +3,14 @@
 use App\Http\Controllers\Account\IndexController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\ParserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController as CategoryController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HomeController as HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\SocialController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -40,7 +42,7 @@ Route::get('/news', [NewsController::class, 'index'])->name('news');
 Route::get('/news/{news}', [NewsController::class, 'show'])->where('news', '\d+')->name('news.show');
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/account', IndexController::class);
+    Route::get('/account', IndexController::class)->name('account');
     Route::get('/logout', function () {
         Auth::logout();
         return redirect()->route('login');
@@ -49,7 +51,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::view('/', 'admin.index')->name('index');
         Route::resource('categories', AdminCategoryController::class);
         Route::resource('news', AdminNewsController::class);
+
+        Route::get('/parse', ParserController::class);
     });
 });
+
+Route::group(['middleware' => 'guest'], function () {
+    Route::get('/init/{driver?}', [SocialController::class, 'init'])
+        ->name('social.init');
+    Route::get('/callback/{driver?}', [SocialController::class, 'callback'])
+        ->name('social.callback');
+});
+
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

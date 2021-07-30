@@ -8,6 +8,7 @@
             <div class="card-header">{{ __('Авторизация') }}</div>
 
             <div class="card-body">
+               <a href="{{route('social.init', ['driver'=>'vkontakte'])}}">Вход через VK</a>
                <form method="POST" action="{{ route('login') }}">
                   @csrf
 
@@ -44,6 +45,7 @@
 
                   <div class="form-group row">
                      <div class="col-md-6 offset-md-4">
+
                         <div class="form-check">
                            <input class="form-check-input" type="checkbox" name="remember" id="remember"
                               {{ old('remember') ? 'checked' : '' }}>
