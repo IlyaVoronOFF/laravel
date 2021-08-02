@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryStore;
-use App\Http\Requests\CategoryUpdate;
-use App\Models\Category;
+use App\Http\Requests\RssStore;
+use App\Http\Requests\RssUpdate;
+use App\Models\Rss;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
-class CategoryController extends Controller
+class ApiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +18,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('news')
-            ->select(['id', 'title', 'description', 'created_at'])->orderBy('id', 'desc')->get();
+        $rss = Rss::orderBy('id', 'desc')->get();
 
-        return view('admin.categories.index', [
-            'categoriesList' => $categories
+        return view('admin.rss.index', [
+            'rssList' => $rss
         ]);
     }
 
@@ -32,7 +32,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        return view('admin.rss.create');
     }
 
     /**
@@ -41,18 +41,23 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryStore $request)
+    public function store(RssStore $request)
     {
+        try {
 
-        $category = Category::create(
-            $request->validated()
-        )->save();
 
-        if ($category) {
-            return redirect()->route('admin.categories.index')->with('success', trans('message.admin.category.created.success'));
+            $rss = Rss::create(
+                $request->validated()
+            )->save();
+
+            if ($rss) {
+                return redirect()->route('admin.rss.index')->with('success', trans('message.admin.rss.created.success'));
+            }
+
+            return back()->with('error', __('message.admin.rss.created.error'));
+        } catch (ValidationException $e) {
+            dd($e->validator->getMessageBag()->all());
         }
-
-        return back()->with('error', trans('message.admin.category.created.error'));
     }
 
     /**
@@ -72,9 +77,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Rss $rss)
     {
-        return view('admin.categories.edit', ['category' => $category]);
+        return view('admin.rss.edit', ['rss' => $rss]);
     }
 
     /**
@@ -84,17 +89,17 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryUpdate $request, Category $category)
+    public function update(RssUpdate $request, Rss $rss)
     {
-        $status = $category->fill(
-            $request->validated()
-        )->save();
+        $data = $request->validated();
+
+        $status = $rss->fill($data)->save();
 
         if ($status) {
-            return redirect()->route('admin.categories.index')->with('success', trans('message.admin.category.updated.success'));
+            return redirect()->route('admin.rss.index')->with('success', trans('message.admin.rss.updated.success'));
         }
 
-        return back()->with('error', trans('message.admin.category.updated.error'));
+        return back()->with('error', __('message.admin.rss.updated.error'));
     }
 
     /**
@@ -103,11 +108,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Category $category)
+    public function destroy(Request $request, Rss $rss)
     {
         if ($request->ajax()) {
             try {
-                $category->delete();
+                $rss->delete();
             } catch (\Throwable $th) {
                 report($th);
             }

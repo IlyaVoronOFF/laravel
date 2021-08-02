@@ -34,7 +34,11 @@
                      <div class="nav-link-icon"><i class="material-icons">dashboard</i></div>
                      Новости
                   </a>
-
+                  <a class="nav-link @if(request()->routeIs('admin.rss.*')) active @endif"
+                     href="{{route('admin.rss.index')}}">
+                     <div class="nav-link-icon"><i class="material-icons">dashboard</i></div>
+                     RSS-ленты
+                  </a>
                </div>
             </div>
             <!-- Drawer footer        -->

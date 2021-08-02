@@ -8,7 +8,9 @@
    <meta name="csrf-token" content="{{ csrf_token() }}">
    <title>@section('title') GBAdmin @show</title>
    <!-- Load Material Icons from Google Fonts-->
-   <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet" />
+   <link
+      href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+      rel="stylesheet" />
    <!-- Load Simple DataTables Stylesheet-->
    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
    <!-- Roboto and Roboto Mono fonts from Google Fonts-->
@@ -61,8 +63,19 @@
    <script src="{{asset('assets/admin/js/datatables/datatables-simple-demo.js')}}"></script>
 
    <script src="https://assets.startbootstrap.com/js/sb-customizer.js"></script>
-   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"rayId":"66a33b95d82c16a1","token":"6e2c2575ac8f44ed824cef7899ba8463","version":"2021.6.0","si":10}'>
+   <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"rayId":"66a33b95d82c16a1","token":"6e2c2575ac8f44ed824cef7899ba8463","version":"2021.6.0","si":10}'>
    </script>
+   <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+   <script>
+   var options = {
+      filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+      filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token=',
+      filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+      filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token='
+   };
+   </script>
+   @stack('js')
 </body>
 
 </html>

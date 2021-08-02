@@ -10,7 +10,13 @@
                <h2 class="post-title">{!! $news->title !!}</h2>
                <h3 class="post-subtitle">{{ $news->description }}</h3>
             </a>
+            @if($news->image)
+            <img src="{{Storage::disk('public')->url($news->image)}}" style="width: 590px;" alt="{{$news->image}}">
+            <br>
+            <br>
+            @endif
             <p class="post-meta">
+
                <strong>Категория: {{optional($news->category)->title}}</strong>&nbsp;
                Опубликовал
                <a href="#!">{{$news->author}}</a>

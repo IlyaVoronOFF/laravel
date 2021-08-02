@@ -47,6 +47,7 @@ class NewsController extends Controller
     {
         try {
 
+
             $news = News::create(
                 $request->validated()
             )->save();
@@ -93,9 +94,19 @@ class NewsController extends Controller
      */
     public function update(NewsUpdate $request, News $news)
     {
-        $status = $news->fill(
-            $request->validated()
-        )->save();
+        $data = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $fileName = md5($file->getClientOriginalName() . time());
+            $fileExt = $file->getClientOriginalExtension();
+
+            $newFileName = $fileName . "." . $fileExt;
+
+            $data['image'] = $file->storeAs('news', $newFileName, 'public');
+        }
+
+        $status = $news->fill($data)->save();
 
         if ($status) {
             return redirect()->route('admin.news.index')->with('success', trans('message.admin.news.updated.success'));

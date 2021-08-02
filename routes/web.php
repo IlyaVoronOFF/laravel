@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Account\IndexController;
+use App\Http\Controllers\Admin\ApiController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\ParserController;
@@ -51,8 +52,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::view('/', 'admin.index')->name('index');
         Route::resource('categories', AdminCategoryController::class);
         Route::resource('news', AdminNewsController::class);
+        Route::resource('rss', ApiController::class);
 
-        Route::get('/parse', ParserController::class);
+        Route::get('/parse', ParserController::class)->name('parse');
     });
 });
 

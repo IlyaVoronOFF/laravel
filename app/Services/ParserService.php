@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Contracts\ParserContract;
+use Database\Seeders\NewsSeeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Orchestra\Parser\Xml\Facade as XmlParser;
 
 class ParserService implements ParserContract
@@ -14,22 +17,38 @@ class ParserService implements ParserContract
       $xml = XmlParser::load($url);
       $data = $xml->parse([
          'title' => [
-            'uses' => 'channel.title'
-         ],
-         'link' => [
-            'uses' => 'channel.link'
+            'uses' => 'channel.item.title'
          ],
          'description' => [
-            'uses' => 'channel.description'
+            'uses' => 'channel.item.description'
          ],
-         'image' => [
-            'uses' => 'channel.image.url'
-         ],
-         'news' => [
-            'uses' => 'channel.item[title,link,guid,description,pubDate]'
+         'created_at' => [
+            'uses' => 'channel.item.pubDate'
          ]
       ]);
 
       return $data;
+   }
+
+   //в файлы
+   public function saveNewsInFile(string $url): void
+   {
+      $parsedList = $this->getParsedList($url);
+      $serialize  = json_encode($parsedList);
+      $explode = explode("/", $url);
+      $fileName = end($explode);
+
+      Storage::append('/news/' . $fileName, $serialize);
+   }
+
+   public function saveNewsInBase(string $url): void
+   {
+      $parsedList = $this->getParsedList($url);
+
+      DB::table('news')->insert([
+         'title' => $parsedList['title'],
+         'description' => $parsedList['description'],
+         'created_at' => $parsedList['created_at'],
+      ]);
    }
 }

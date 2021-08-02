@@ -13,7 +13,8 @@
          <br>
          @include('inc.error')
          <div>
-            <form action="{{route('admin.news.update', ['news' => $news])}}" method="post">
+            <form action="{{route('admin.news.update', ['news' => $news])}}" method="post"
+               enctype="multipart/form-data">
                @csrf
                @method('put')
                <div class="form-group">
@@ -69,7 +70,7 @@
                <br>
                <div class="form-group">
                   <label for="description">Текст</label>
-                  <textarea class="form-control" name="description" id="" cols="30"
+                  <textarea class="form-control" name="description" id="description" cols="30"
                      rows="10">{{$news->description}}</textarea>
                </div>
                <br>
@@ -80,3 +81,17 @@
    </div>
 </main>
 @endsection
+@push('js')
+<script>
+CKEDITOR.replace('description', options);
+</script>
+<script>
+ClassicEditor.create(document.querySelector('#description'))
+   .then(editor => {
+      console.log(editor);
+   })
+   .catch(error => {
+      console.error(error);
+   });
+</script>
+@endpush
